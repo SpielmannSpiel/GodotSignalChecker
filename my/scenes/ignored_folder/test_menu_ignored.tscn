@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cqnf6ri6yup4c"]
+
+[ext_resource type="Script" uid="uid://wihgte2l4gch" path="res://my/scripts/event_receiver.gd" id="1_c0bco"]
+[ext_resource type="Script" uid="uid://decr71yn1yl23" path="res://my/scripts/EventReceiverCs.cs" id="2_7hrty"]
+
+[node name="test_menu" type="Control" unique_id=474222249]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ControlNodes" type="Node" parent="." unique_id=830331705]
+
+[node name="godotTarget" type="Node" parent="ControlNodes" unique_id=1462379483]
+script = ExtResource("1_c0bco")
+
+[node name="csharpTarget" type="Node" parent="ControlNodes" unique_id=596624792]
+script = ExtResource("2_7hrty")
+
+[node name="btnPressedTest" type="Button" parent="." unique_id=189474991]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "BUTTON PRESSED TEST"
+
+[connection signal="pressed" from="btnPressedTest" to="ControlNodes/godotTarget" method="pressed_renamed"]
+[connection signal="pressed" from="btnPressedTest" to="ControlNodes/godotTarget" method="pressed"]
+[connection signal="pressed" from="btnPressedTest" to="ControlNodes/csharpTarget" method="Pressed"]
+[connection signal="pressed" from="btnPressedTest" to="ControlNodes/csharpTarget" method="PressedRenamed"]
