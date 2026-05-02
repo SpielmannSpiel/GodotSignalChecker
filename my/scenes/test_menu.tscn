@@ -19,13 +19,22 @@ script = ExtResource("1_sirfx")
 [node name="csharpTarget" type="Node" parent="ControlNodes" unique_id=596624792]
 script = ExtResource("2_egbho")
 
-[node name="btnPressedTest" type="Button" parent="." unique_id=189474991]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1277670183]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="btnPressedTest" type="Button" parent="VBoxContainer" unique_id=189474991]
+layout_mode = 2
 text = "BUTTON PRESSED TEST"
 
-[connection signal="pressed" from="btnPressedTest" to="ControlNodes/godotTarget" method="pressed_renamed"]
-[connection signal="pressed" from="btnPressedTest" to="ControlNodes/godotTarget" method="pressed"]
-[connection signal="pressed" from="btnPressedTest" to="ControlNodes/csharpTarget" method="Pressed"]
-[connection signal="pressed" from="btnPressedTest" to="ControlNodes/csharpTarget" method="PressedRenamed"]
+[node name="btnPressedTestWrongParam" type="Button" parent="VBoxContainer" unique_id=529489822]
+layout_mode = 2
+text = "BUTTON PRESSED TEST MISSING PARAM"
+
+[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/godotTarget" method="pressed_renamed"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/godotTarget" method="pressed"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/csharpTarget" method="Pressed"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/csharpTarget" method="PressedRenamed"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/godotTarget" method="pressed_wrong_param"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/csharpTarget" method="PressedWrongParam"]

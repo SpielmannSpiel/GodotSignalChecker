@@ -78,12 +78,13 @@ func _populate(results: Array) -> void:
 		scene_item.set_metadata(0, scene_path)
 		
 		for r in by_scene[scene_path]:
+			var wrong_parameter_count_message = " wrong parameter count" if r["wrong_parameter_count"] else ""
 			var item := tree.create_item(scene_item)
 			item.set_text(0, String(r["signal_name"]))
 			item.set_text(1, String(r["source_node_path"]))
 			item.set_text(2, ">")
 			item.set_text(3, String(r["target_node_path"]))
-			item.set_text(4, String(r["method_name"]))
+			item.set_text(4, String(r["method_name"]) + wrong_parameter_count_message)
 			item.set_metadata(0, scene_path)
 
 	if results.is_empty():

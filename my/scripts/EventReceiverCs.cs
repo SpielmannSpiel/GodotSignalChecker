@@ -8,6 +8,11 @@ public partial class EventReceiverCs : Node
         GD.Print("Pressed CS");
     }
 
+    public void PressedWrongParam(int i)
+    {
+        GD.Print("Pressed CS Wrong Param");
+    }
+
     public void PressedRenamed1()
     {
         GD.Print("Pressed Renamed CS");
