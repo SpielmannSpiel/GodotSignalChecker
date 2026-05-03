@@ -1,7 +1,7 @@
 # Godot Signal Checker
 
 Checks scenes for broken signals / events connected via the the Godot signal tab.  
- 
+
 
 ## The Problem
 
