@@ -31,7 +31,7 @@ Either use the Godot assed library to install it or manually copy the `addons/Go
 
 ## Use
 
-When opening the project or rnabling the project an initial scan will be performed.  
+When opening the project or enabling the plugin an initial scan will be performed.  
 Other than that there is currently no auto-reload system, switch to the "Signal Checker" tab at the bottom and press the `Scan` button.  
 
 
