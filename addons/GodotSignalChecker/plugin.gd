@@ -16,7 +16,7 @@ func _enter_tree() -> void:
 	#dock.dock_icon = preload("./dock_icon.png")
 	editor_dock.default_slot = EditorDock.DOCK_SLOT_BOTTOM
 	
-	var dock_content = preload("res://addons/GodotSignalChecker/scenes/signal_checker_dock.tscn").instantiate()
+	var dock_content := preload("res://addons/GodotSignalChecker/scenes/signal_checker_dock.tscn").instantiate()
 	dock_content.editor_dock = editor_dock
 	
 	editor_dock.add_child(dock_content)

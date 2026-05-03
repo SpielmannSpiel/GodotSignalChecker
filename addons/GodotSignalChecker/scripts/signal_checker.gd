@@ -1,7 +1,7 @@
 @tool
 extends RefCounted
 
-const Shared := preload("res://addons/GodotSignalChecker/scripts/shared.gd")
+const Shared: Resource = preload("res://addons/GodotSignalChecker/scripts/shared.gd")
 
 
 static func scan_project() -> Array:
@@ -15,18 +15,18 @@ static func scan_project() -> Array:
 
 static func _collect_scenes(root: String) -> Array[String]:
 	var out: Array[String] = []
-	var dir := DirAccess.open(root)
+	var dir: DirAccess = DirAccess.open(root)
 	
 	if dir == null:
 		return out
 	
 	dir.list_dir_begin()
-	var name := dir.get_next()
+	var name: String = dir.get_next()
 	
 	while name != "":
 		# Skip hidden dirs (.godot, .git, ...)
 		if not name.begins_with("."):
-			var full := root.path_join(name)
+			var full: String = root.path_join(name)
 			if dir.current_is_dir():
 				# ignore any folder that has a .gdignore inside it
 				if FileAccess.file_exists(full.path_join(".gdignore")):
@@ -45,17 +45,17 @@ static func _collect_scenes(root: String) -> Array[String]:
 
 static func _check_scene(path: String) -> Array:
 	var results: Array = []
-	var pack := load(path) as PackedScene
+	var pack: PackedScene = load(path) as PackedScene
 	
 	if pack == null:
 		return results
 
-	var state := pack.get_state()
-	var connection_count := state.get_connection_count()
+	var state: SceneState = pack.get_state()
+	var connection_count: int = state.get_connection_count()
 	if connection_count == 0:
 		return results
 
-	var root := pack.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+	var root: Node = pack.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	if root == null:
 		return results
 
@@ -64,7 +64,7 @@ static func _check_scene(path: String) -> Array:
 		var dst_path: NodePath = state.get_connection_target(i)
 		var signal_name: StringName = state.get_connection_signal(i)
 		var method: StringName = state.get_connection_method(i)
-		var target := root.get_node_or_null(dst_path)
+		var target: Node = root.get_node_or_null(dst_path)
 
 		if target == null:
 			# Target node itself is missing - still a broken connection.
@@ -76,7 +76,7 @@ static func _check_scene(path: String) -> Array:
 			continue
 
 		if Shared.read_scan_parameter():
-			var source_node := root.get_node_or_null(src_path)
+			var source_node: Node = root.get_node_or_null(src_path)
 			if source_node == null:
 				continue
 
@@ -97,19 +97,19 @@ static func _parameter_counts_match(
 	bind_count: int,
 	unbind_count: int
 ) -> bool:
-	var signal_args := _signal_argument_count(source, signal_name)
-	var method_info := _method_info(target, method_name)
+	var signal_args: int = _signal_argument_count(source, signal_name)
+	var method_info: Dictionary = _method_info(target, method_name)
 
 	if signal_args < 0 or method_info.is_empty():
 		# could not introspect - don't flag as broken.
 		Shared.debug_log("could not introspect: %s -> %s " % [signal_name, method_name])
 		return true
 
-	var delivered := signal_args - unbind_count + bind_count
+	var delivered: int = signal_args - unbind_count + bind_count
 	var total_params: int = (method_info["args"] as Array).size()
 	var default_params: int = (method_info["default_args"] as Array).size()
-	var required_params := total_params - default_params
-	var ok := delivered >= required_params and delivered <= total_params
+	var required_params: int = total_params - default_params
+	var ok: bool = delivered >= required_params and delivered <= total_params
 
 	Shared.debug_log(
 		"%s.%s -> delivered=%d, accepts: requires=%d total=%d %s" % [
@@ -139,12 +139,12 @@ static func _method_info(node: Node, method_name: StringName) -> Dictionary:
 
 
 static func _target_has_method(target: Node, method: StringName) -> bool:
-	var script := target.get_script() as Script
+	var script: Script = target.get_script() as Script
 	var result: bool
 		
 	result = target.has_method(method)
 
-	var script_path := script.resource_path if script != null else "<none>"
+	var script_path: String = script.resource_path if script != null else "<none>"
 	Shared.debug_log("%s.%s script=%s -> %s" % [target.name, method, script_path, "OK" if result else "MISSING"])
 	return result
 

@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-const SignalChecker := preload("res://addons/GodotSignalChecker/scripts/signal_checker.gd")
+const SignalChecker: Resource = preload("res://addons/GodotSignalChecker/scripts/signal_checker.gd")
 const Shared := preload("res://addons/GodotSignalChecker/scripts/shared.gd")
 
 signal scan_finished(broken_count: int)
@@ -22,9 +22,6 @@ func _ready() -> void:
 		return
 
 	custom_minimum_size = Vector2(0, 200)
-
-	var toolbar := HBoxContainer.new()
-	add_child(toolbar)
 
 	debug_check.button_pressed = Shared.debug
 	debug_check.toggled.connect(func(on: bool) -> void: Shared.debug = on)
@@ -60,7 +57,7 @@ func _populate(results: Array) -> void:
 	last_results = results
 	tree.clear()
 	
-	var root := tree.create_item()
+	var root: TreeItem = tree.create_item()
 
 	var by_scene: Dictionary = {}
 	for r in results:
@@ -70,7 +67,7 @@ func _populate(results: Array) -> void:
 		by_scene[key].append(r)
 
 	for scene_path in by_scene:
-		var scene_item := tree.create_item(root)
+		var scene_item: TreeItem = tree.create_item(root)
 		scene_item.set_text(0, scene_path)
 		scene_item.set_selectable(1, false)
 		scene_item.set_selectable(2, false)
@@ -78,7 +75,7 @@ func _populate(results: Array) -> void:
 		
 		for r in by_scene[scene_path]:
 			var wrong_parameter_count_message := " wrong parameter count" if r["wrong_parameter_count"] else ""
-			var item := tree.create_item(scene_item)
+			var item: TreeItem = tree.create_item(scene_item)
 			item.set_text(0, String(r["signal_name"]))
 			item.set_text(1, String(r["source_node_path"]))
 			item.set_text(2, ">")
@@ -97,7 +94,7 @@ func _populate(results: Array) -> void:
 
 
 func _on_item_activated() -> void:
-	var item := tree.get_selected()
+	var item: TreeItem = tree.get_selected()
 	if item == null:
 		return
 	
