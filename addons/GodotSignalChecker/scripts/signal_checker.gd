@@ -60,61 +60,82 @@ static func _check_scene(path: String) -> Array:
 		return results
 
 	for i in connection_count:
+		var src_path: NodePath = state.get_connection_source(i)
 		var dst_path: NodePath = state.get_connection_target(i)
+		var signal_name: StringName = state.get_connection_signal(i)
 		var method: StringName = state.get_connection_method(i)
 		var target := root.get_node_or_null(dst_path)
-		
+
 		if target == null:
 			# Target node itself is missing - still a broken connection.
 			results.append(_make_report_entry(path, state, i, false))
 			continue
-		
+
 		if not _target_has_method(target, method):
 			results.append(_make_report_entry(path, state, i, false))
-		
-		# TODO: make parameter count work
-		#else:
-		#	var source_node: Node = root.get_node_or_null(state.get_node_path(i))
-		#	if not _method_params_equal(source_node, target, method):
-		#		results.append(_make_report_entry(path, state, i, true))
+			continue
+
+		if Shared.read_scan_parameter():
+			var source_node := root.get_node_or_null(src_path)
+			if source_node == null:
+				continue
+
+			var binds: Array = state.get_connection_binds(i)
+			var unbinds: int = state.get_connection_unbinds(i)
+			if not _parameter_counts_match(source_node, target, signal_name, method, binds.size(), unbinds):
+				results.append(_make_report_entry(path, state, i, true))
 
 	root.queue_free()
 	return results
 
 
-static func _method_params_equal(source: Node, target: Node, method_name: StringName) -> bool:
-	# doesnt work, yet
-	var source_script := source.get_script() as Script
-	var target_script := target.get_script() as Script
-	
-	if source_script != null:
-		for m in source_script.get_script_method_list():
-			if m["name"] == method_name:
-				print(m["args"])
-				print(m["args"].size())
+static func _parameter_counts_match(
+	source: Node,
+	target: Node,
+	signal_name: StringName,
+	method_name: StringName,
+	bind_count: int,
+	unbind_count: int
+) -> bool:
+	var signal_args := _signal_argument_count(source, signal_name)
+	var method_info := _method_info(target, method_name)
 
-	if target_script != null:
-		for m in target_script.get_script_method_list():
-			if m["name"] == method_name:
-				print(m["args"])
-				print(m["args"].size())
+	if signal_args < 0 or method_info.is_empty():
+		# could not introspect - don't flag as broken.
+		Shared.debug_log("could not introspect: %s -> %s " % [signal_name, method_name])
+		return true
 
-	# these always return 0
-	var source_arguments_count: int = source.get_method_argument_count(method_name)
-	var target_arguments_count: int = target.get_method_argument_count(method_name)
-	
-	var target_script_path := target_script.resource_path if target_script != null else "<none>"
+	var delivered := signal_args - unbind_count + bind_count
+	var total_params: int = (method_info["args"] as Array).size()
+	var default_params: int = (method_info["default_args"] as Array).size()
+	var required_params := total_params - default_params
+	var ok := delivered >= required_params and delivered <= total_params
+
 	Shared.debug_log(
-		"%s.%s  script=%s -> parameter count %d/%d %s" % [
+		"%s.%s -> delivered=%d, accepts: requires=%d total=%d %s" % [
 			target.name,
 			method_name,
-			target_script_path,
-			source_arguments_count,
-			target_arguments_count,
-			"OK" if source_arguments_count == target_arguments_count else "WRONG PARAMETER COUNT"
+			delivered,
+			required_params,
+			total_params,
+			"OK" if ok else "WRONG PARAMETER COUNT"
 		]
 	)
-	return source_arguments_count == target_arguments_count
+	return ok
+
+
+static func _signal_argument_count(node: Node, signal_name: StringName) -> int:
+	for signal_info in node.get_signal_list():
+		if signal_info["name"] == signal_name:
+			return (signal_info["args"] as Array).size()
+	return -1
+
+
+static func _method_info(node: Node, method_name: StringName) -> Dictionary:
+	for method_info in node.get_method_list():
+		if method_info["name"] == method_name:
+			return method_info
+	return {}
 
 
 static func _target_has_method(target: Node, method: StringName) -> bool:
@@ -124,7 +145,7 @@ static func _target_has_method(target: Node, method: StringName) -> bool:
 	result = target.has_method(method)
 
 	var script_path := script.resource_path if script != null else "<none>"
-	Shared.debug_log("%s.%s  script=%s -> %s" % [target.name, method, script_path, "OK" if result else "MISSING"])
+	Shared.debug_log("%s.%s script=%s -> %s" % [target.name, method, script_path, "OK" if result else "MISSING"])
 	return result
 
 

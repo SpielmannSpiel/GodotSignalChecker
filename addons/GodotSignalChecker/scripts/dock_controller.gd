@@ -47,7 +47,6 @@ func rescan() -> void:
 
 
 func _populate(results: Array) -> void:
-	Shared.debug_log("_populate: "  + str(results.size()))
 	editor_dock.title = Shared.DOCK_TITLE
 
 	if results.size() > 0:
@@ -78,7 +77,7 @@ func _populate(results: Array) -> void:
 		scene_item.set_metadata(0, scene_path)
 		
 		for r in by_scene[scene_path]:
-			var wrong_parameter_count_message = " wrong parameter count" if r["wrong_parameter_count"] else ""
+			var wrong_parameter_count_message := " wrong parameter count" if r["wrong_parameter_count"] else ""
 			var item := tree.create_item(scene_item)
 			item.set_text(0, String(r["signal_name"]))
 			item.set_text(1, String(r["source_node_path"]))
