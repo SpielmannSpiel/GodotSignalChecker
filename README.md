@@ -15,6 +15,7 @@ This should be a temporary solution until the GitHub issue [godot-proposals#8982
 
 * Scans your scenes for missing signals
 * Supports GDscript and C#
+* Disable parameter scans
 * Purely written in GDscript for maximal compatibility
 
 
@@ -36,7 +37,12 @@ Other than that there is currently no auto-reload system, switch to the "Signal 
 
 ## Issues
 
-It is not clear if this the parameter count works correctly, eg. build in Godot functions in C# (there are a lot of warnings about that and snake case), so you can deactivate it.
+It is not clear if this the parameter count works correctly, eg. build in Godot functions in C# (there are a lot of warnings about that and snake case), so you can deactivate it.  
+
+
+## TODO
+
+* Check method parameter types  
 
 
 ## Contribute

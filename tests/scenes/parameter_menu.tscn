@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://dwc8xy1jnq0t2"]
+[gd_scene format=3 uid="uid://dylotnud257o7"]
 
-[ext_resource type="Script" uid="uid://wihgte2l4gch" path="res://my/scripts/event_receiver.gd" id="1_sirfx"]
-[ext_resource type="Script" uid="uid://decr71yn1yl23" path="res://my/scripts/EventReceiverCs.cs" id="2_egbho"]
+[ext_resource type="Script" uid="uid://wihgte2l4gch" path="res://tests/scripts/event_receiver.gd" id="1_hts56"]
+[ext_resource type="Script" uid="uid://decr71yn1yl23" path="res://tests/scripts/EventReceiverCs.cs" id="2_q2kt5"]
 
 [node name="test_menu" type="Control" unique_id=474222249]
 layout_mode = 3
@@ -14,27 +14,19 @@ grow_vertical = 2
 [node name="ControlNodes" type="Node" parent="." unique_id=830331705]
 
 [node name="godotTarget" type="Node" parent="ControlNodes" unique_id=1462379483]
-script = ExtResource("1_sirfx")
+script = ExtResource("1_hts56")
 
 [node name="csharpTarget" type="Node" parent="ControlNodes" unique_id=596624792]
-script = ExtResource("2_egbho")
+script = ExtResource("2_q2kt5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1277670183]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="btnPressedTest" type="Button" parent="VBoxContainer" unique_id=189474991]
-layout_mode = 2
-text = "BUTTON PRESSED TEST"
-
 [node name="btnPressedTestWrongParam" type="Button" parent="VBoxContainer" unique_id=529489822]
 layout_mode = 2
 text = "BUTTON PRESSED TEST MISSING PARAM"
 
-[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/godotTarget" method="pressed_renamed"]
-[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/godotTarget" method="pressed"]
-[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/csharpTarget" method="Pressed"]
-[connection signal="pressed" from="VBoxContainer/btnPressedTest" to="ControlNodes/csharpTarget" method="PressedRenamed"]
 [connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/godotTarget" method="pressed_wrong_param"]
 [connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/csharpTarget" method="PressedWrongParam"]
