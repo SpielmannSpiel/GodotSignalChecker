@@ -51,6 +51,6 @@ States that are considered "stable" enough will get a git-tag and be released to
 
 
 ## OTHER
-Godot Asset Library: TBD
+Godot Asset Library: https://godotengine.org/asset-library/asset/5122
 GitHub: https://github.com/SpielmannSpiel/GodotSignalChecker
 by bison - SpielmannSpiel https://spielmannspiel.com  
