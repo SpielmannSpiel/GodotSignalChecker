@@ -46,11 +46,13 @@ It is not clear if this the parameter count works correctly, eg. build in Godot 
 
 
 ## Contribute
-Please try to adhere to the GDScript style guidelines https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html.  
+Please try to adhere to the GDScript style guidelines [https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html](https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/).  
 States that are considered "stable" enough will get a git-tag and be released to the Godot Asset Library.  
 
 
 ## OTHER
-Godot Asset Library: https://godotengine.org/asset-library/asset/5122  
-GitHub: https://github.com/SpielmannSpiel/GodotSignalChecker  
-by bison - SpielmannSpiel https://spielmannspiel.com  
+
+Godot Asset Library (new): [https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/](https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/)  
+Godot Asset Library (old): [https://godotengine.org/asset-library/asset/5122](https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/)  
+GitHub: [https://github.com/SpielmannSpiel/GodotSignalChecker](https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/)  
+by bison - SpielmannSpiel [https://spielmannspiel.com](https://store.godotengine.org/asset/spielmannspiel/godot-signal-checker/)  
