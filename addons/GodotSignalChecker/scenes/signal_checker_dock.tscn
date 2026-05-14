@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c4312din71jry" path="res://addons/GodotSignalChecker/scripts/dock_controller.gd" id="1_rd610"]
 
-[node name="SignalCheckerDock" type="Panel" unique_id=437717282 node_paths=PackedStringArray("status", "debug_check", "tree")]
+[node name="SignalCheckerDock" type="Panel" unique_id=437717282 node_paths=PackedStringArray("status", "debug_check", "print_result_console_check", "tree")]
 custom_minimum_size = Vector2(0, 200)
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_rd610")
 status = NodePath("VBoxContainer/HBoxContainer/lblStatus")
 debug_check = NodePath("VBoxContainer/HBoxContainer/chkDebug")
+print_result_console_check = NodePath("VBoxContainer/HBoxContainer/chkPrintToConsole")
 tree = NodePath("VBoxContainer/treResult")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=643982042]
@@ -36,9 +37,14 @@ text = "Scanning..."
 clip_text = true
 text_overrun_behavior = 5
 
+[node name="chkPrintToConsole" type="CheckButton" parent="VBoxContainer/HBoxContainer" unique_id=1437934707]
+layout_mode = 2
+tooltip_text = "Print scan results to the output panel (needs re-scan)."
+text = "print results to console"
+
 [node name="chkDebug" type="CheckButton" parent="VBoxContainer/HBoxContainer" unique_id=1205382035]
 layout_mode = 2
-tooltip_text = "Print debug scan details to the Output panel."
+tooltip_text = "Print debug scan details to the output panel."
 text = "Debug"
 
 [node name="treResult" type="Tree" parent="VBoxContainer" unique_id=559038415]

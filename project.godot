@@ -11,6 +11,8 @@ config_version=5
 [application]
 
 config/name="Godot Signal Checker"
+config/description="Checks for missing signal connectionss"
+config/version="0.2.0"
 run/main_scene="uid://dwc8xy1jnq0t2"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 config/icon="res://icon.svg"

@@ -6,6 +6,7 @@ const SETTING_SCAN_PARAMETER_DEFAULT: bool = true
 
 # Toggled by the dock's Debug checkbox.
 static var debug: bool = false
+static var print_result: bool = false
 
 static func debug_log(msg: String) -> void:
 	if debug:

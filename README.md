@@ -17,6 +17,7 @@ This should be a temporary solution until the GitHub issue [godot-proposals#8982
 * Supports GDscript and C#
 * Disable parameter scans
 * Purely written in GDscript for maximal compatibility
+* Print results to console for easier sharing
 
 
 ## Screenshots

@@ -29,4 +29,6 @@ layout_mode = 2
 text = "BUTTON PRESSED TEST MISSING PARAM"
 
 [connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/godotTarget" method="pressed_wrong_param"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/godotTarget" method="pressed"]
+[connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/csharpTarget" method="Pressed"]
 [connection signal="pressed" from="VBoxContainer/btnPressedTestWrongParam" to="ControlNodes/csharpTarget" method="PressedWrongParam"]

@@ -8,6 +8,7 @@ Checks scenes for broken signals / events connected via the the Godot signal tab
 * Supports GDscript and C#
 * Disable parameter scans
 * Purely written in GDscript for maximal compatibility
+* Print results to console for easier sharing
 
 
 ## The Problem

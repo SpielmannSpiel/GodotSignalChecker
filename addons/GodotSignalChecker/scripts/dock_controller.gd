@@ -6,13 +6,20 @@ const Shared := preload("res://addons/GodotSignalChecker/scripts/shared.gd")
 
 signal scan_finished(broken_count: int)
 
+var result_header: Array = [
+	"Signal",
+	"From",
+	"->",
+	"To",
+	"Missing method"
+]
 var last_results: Array = []
 var editor_dock: EditorDock
 
 @export var status: Label
 @export var debug_check: CheckButton
+@export var print_result_console_check: CheckButton
 @export var tree: Tree
-
 
 func _ready() -> void:
 	# for some reasons this ready gets called twice
@@ -23,14 +30,15 @@ func _ready() -> void:
 
 	custom_minimum_size = Vector2(0, 200)
 
+	print_result_console_check.button_pressed = Shared.print_result
+	print_result_console_check.toggled.connect(func(on: bool) -> void: Shared.print_result = on)
+
 	debug_check.button_pressed = Shared.debug
 	debug_check.toggled.connect(func(on: bool) -> void: Shared.debug = on)
+	
+	for i in range(result_header.size()):
+		tree.set_column_title(i, result_header[i])
 
-	tree.set_column_title(0, "Signal")
-	tree.set_column_title(1, "From")
-	tree.set_column_title(2, "->")
-	tree.set_column_title(3, "To")
-	tree.set_column_title(4, "Missing method")
 	tree.set_column_expand(2, false)
 	
 	rescan()
@@ -60,11 +68,14 @@ func _populate(results: Array) -> void:
 	var root: TreeItem = tree.create_item()
 
 	var by_scene: Dictionary = {}
-	for r in results:
-		var key: String = r["scene_path"]
+	for result in results:
+		var key: String = result["scene_path"]
 		if not by_scene.has(key):
 			by_scene[key] = []
-		by_scene[key].append(r)
+		by_scene[key].append(result)
+
+	if Shared.print_result:
+		print("  |  ".join(result_header))
 
 	for scene_path in by_scene:
 		var scene_item: TreeItem = tree.create_item(root)
@@ -73,15 +84,29 @@ func _populate(results: Array) -> void:
 		scene_item.set_selectable(2, false)
 		scene_item.set_metadata(0, scene_path)
 		
-		for r in by_scene[scene_path]:
-			var wrong_parameter_count_message := " wrong parameter count" if r["wrong_parameter_count"] else ""
+		if Shared.print_result:
+			print("Scene: ", scene_path)
+		
+		for result in by_scene[scene_path]:
+			var wrong_parameter_count_message := " wrong parameter count" if result["wrong_parameter_count"] else ""
 			var item: TreeItem = tree.create_item(scene_item)
-			item.set_text(0, String(r["signal_name"]))
-			item.set_text(1, String(r["source_node_path"]))
-			item.set_text(2, ">")
-			item.set_text(3, String(r["target_node_path"]))
-			item.set_text(4, String(r["method_name"]) + wrong_parameter_count_message)
+			
+			var field_entries = [
+				String(result["signal_name"]),
+				String(result["source_node_path"]),
+				">",
+				String(result["target_node_path"]),
+				String(result["method_name"]) + wrong_parameter_count_message
+			]
+			
+			var row_format = "%s  |  %s -%s %s  |  %s"
+			for i in range(field_entries.size()):
+				item.set_text(i, field_entries[i])
+				if Shared.print_result:
+					print(row_format % field_entries)
+			
 			item.set_metadata(0, scene_path)
+
 
 	if results.is_empty():
 		status.text = "No broken connections."
